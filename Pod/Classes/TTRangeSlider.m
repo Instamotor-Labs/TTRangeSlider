@@ -5,7 +5,7 @@
 
 #import "TTRangeSlider.h"
 
-const int HANDLE_TOUCH_AREA_EXPANSION = 0; //expand the touch area of the handle by this much (negative values increase size) so that you don't have to touch right on the handle to activate it.
+const int HANDLE_TOUCH_AREA_EXPANSION = -30; //expand the touch area of the handle by this much (negative values increase size) so that you don't have to touch right on the handle to activate it.
 const float HANDLE_DIAMETER = 32;
 const float TEXT_HEIGHT = 14;
 
@@ -369,28 +369,28 @@ static const CGFloat kLabelsFontSize = 12.0f;
 #pragma mark - Animation
 - (void)animateHandle:(CALayer*)handle withSelection:(BOOL)selected {
     if (selected){
-        //        [CATransaction begin];
-        //        [CATransaction setAnimationDuration:0.3];
-        //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-        //        handle.transform = CATransform3DMakeScale(1.7, 1.7, 1);
+                [CATransaction begin];
+                [CATransaction setAnimationDuration:0.3];
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+                handle.transform = CATransform3DMakeScale(1.7, 1.7, 1);
         
         //the label above the handle will need to move too if the handle changes size
         [self updateLabelPositions];
         
-        //        [CATransaction setCompletionBlock:^{
-        //        }];
-        //        [CATransaction commit];
+                [CATransaction setCompletionBlock:^{
+                }];
+                [CATransaction commit];
         
     } else {
-        //        [CATransaction begin];
-        //        [CATransaction setAnimationDuration:0.3];
-        //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-        //        handle.transform = CATransform3DIdentity;
+                [CATransaction begin];
+                [CATransaction setAnimationDuration:0.3];
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+                handle.transform = CATransform3DIdentity;
         
         //the label above the handle will need to move too if the handle changes size
         [self updateLabelPositions];
         
-        //        [CATransaction commit];
+                [CATransaction commit];
     }
 }
 
