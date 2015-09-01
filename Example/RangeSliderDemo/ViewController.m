@@ -26,6 +26,11 @@
     self.rangeSlider.maxValue = 200;
     self.rangeSlider.selectedMinimum = 50;
     self.rangeSlider.selectedMaximum = 150;
+    self.rangeSlider.barPadding = 16.0f;
+    self.rangeSlider.barThickness = 8.0f;
+    self.rangeSlider.barCornerRadius = 4.0f;
+    self.rangeSlider.barHandleDiameter = 32.0f;
+    
     
     //currency range slider
     self.rangeSliderCurrency.delegate = self;
