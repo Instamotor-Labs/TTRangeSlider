@@ -100,6 +100,8 @@ IB_DESIGNABLE
  * The color of the maximum value text label. If not set, the default is the tintColor.
  */
 @property (nonatomic, strong) IBInspectable UIColor *handleColor;
+@property (nonatomic, strong) IBInspectable UIColor *handleBorderColor;
+@property (nonatomic, assign) IBInspectable float handleBorderThickness;
 
 
 /**

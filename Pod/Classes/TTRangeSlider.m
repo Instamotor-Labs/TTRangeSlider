@@ -114,6 +114,12 @@ static const CGFloat kLabelsFontSize = 12.0f;
     self.leftHandle.backgroundColor = self.handleColor.CGColor;
     self.rightHandle.backgroundColor = self.handleColor.CGColor;
     
+    [self.leftHandle setBorderColor:self.handleBorderColor.CGColor];
+    [self.leftHandle setBorderWidth:self.handleBorderThickness];
+    
+    [self.rightHandle setBorderColor:self.handleBorderColor.CGColor];
+    [self.rightHandle setBorderWidth:self.handleBorderThickness];
+    
     
     float lineThickness = (self.barThickness > 0)? self.barThickness : 1.0;
     self.sliderLine.frame = CGRectMake(lineLeftSide.x, lineLeftSide.y, lineRightSide.x-lineLeftSide.x, lineThickness);

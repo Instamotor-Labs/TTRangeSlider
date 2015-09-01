@@ -34,6 +34,9 @@
     self.rangeSlider.handleColor = [UIColor blueColor];
     self.rangeSlider.barColor = [UIColor purpleColor];
     
+    self.rangeSlider.handleBorderThickness = 2.0f;
+    self.rangeSlider.handleBorderColor = [UIColor greenColor];
+    
     
     //currency range slider
     self.rangeSliderCurrency.delegate = self;
