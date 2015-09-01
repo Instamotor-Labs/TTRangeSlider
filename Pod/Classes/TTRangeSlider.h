@@ -66,10 +66,37 @@ IB_DESIGNABLE
  */
 @property (nonatomic, assign) IBInspectable BOOL enableStep;
 
+
+
+/**
+ * If set, this will adjust the corner radius of the bar
+ */
+@property (nonatomic, assign) IBInspectable float barHandleDiameter;
+
+/**
+ * If set, this will adjust the bar padding to the set value
+ */
+@property (nonatomic, assign) IBInspectable float barPadding;
+
+
+/**
+ * If set, this will adjust the thickness of the bar
+ */
+@property (nonatomic, assign) IBInspectable float barThickness;
+
+
+/**
+ * If set, this will adjust the corner radius of the bar
+ */
+@property (nonatomic, assign) IBInspectable float barCornerRadius;
+
+
+
 /**
  * The step value, this control the value of each step. If not set the default is 0.1.
  * (note: this is ignored if <= 0.0)
  */
 @property (nonatomic, assign) IBInspectable float step;
+
 
 @end
