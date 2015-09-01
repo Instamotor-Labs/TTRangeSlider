@@ -6,7 +6,7 @@
 #import "TTRangeSlider.h"
 
 const int HANDLE_TOUCH_AREA_EXPANSION = 0; //expand the touch area of the handle by this much (negative values increase size) so that you don't have to touch right on the handle to activate it.
-const float HANDLE_DIAMETER = 28;
+const float HANDLE_DIAMETER = 32;
 const float TEXT_HEIGHT = 14;
 
 @interface TTRangeSlider ()
@@ -107,6 +107,12 @@ static const CGFloat kLabelsFontSize = 12.0f;
     float yMiddle = currentFrame.size.height/2.0;
     CGPoint lineLeftSide = CGPointMake(barSidePadding, yMiddle);
     CGPoint lineRightSide = CGPointMake(currentFrame.size.width-barSidePadding, yMiddle);
+    
+    self.sliderLine.backgroundColor = self.barColor.CGColor;
+    
+    
+    self.leftHandle.backgroundColor = self.handleColor.CGColor;
+    self.rightHandle.backgroundColor = self.handleColor.CGColor;
     
     
     float lineThickness = (self.barThickness > 0)? self.barThickness : 1.0;

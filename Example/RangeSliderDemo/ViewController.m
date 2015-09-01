@@ -31,6 +31,9 @@
     self.rangeSlider.barCornerRadius = 4.0f;
     self.rangeSlider.barHandleDiameter = 32.0f;
     
+    self.rangeSlider.handleColor = [UIColor blueColor];
+    self.rangeSlider.barColor = [UIColor purpleColor];
+    
     
     //currency range slider
     self.rangeSliderCurrency.delegate = self;

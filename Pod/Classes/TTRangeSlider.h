@@ -90,6 +90,16 @@ IB_DESIGNABLE
  */
 @property (nonatomic, assign) IBInspectable float barCornerRadius;
 
+/**
+ * The color of the maximum value text label. If not set, the default is the tintColor.
+ */
+@property (nonatomic, strong) IBInspectable UIColor *barColor;
+
+
+/**
+ * The color of the maximum value text label. If not set, the default is the tintColor.
+ */
+@property (nonatomic, strong) IBInspectable UIColor *handleColor;
 
 
 /**
