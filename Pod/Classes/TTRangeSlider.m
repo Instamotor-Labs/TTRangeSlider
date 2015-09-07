@@ -200,10 +200,10 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
 #pragma mark - Set Positions
 - (void)updateHandlePositions {
-    CGPoint leftHandleCenter = CGPointMake([self getXPositionAlongLineForValue:self.selectedMinimum], CGRectGetMidY(self.sliderLine.frame));
+    CGPoint leftHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMinimum]  + HANDLE_DIAMETER/2.0f), CGRectGetMidY(self.sliderLine.frame));
     self.leftHandle.position = leftHandleCenter;
     
-    CGPoint rightHandleCenter = CGPointMake([self getXPositionAlongLineForValue:self.selectedMaximum], CGRectGetMidY(self.sliderLine.frame));
+    CGPoint rightHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMaximum] - HANDLE_DIAMETER/2.0f), CGRectGetMidY(self.sliderLine.frame));
     self.rightHandle.position= rightHandleCenter;
 }
 
