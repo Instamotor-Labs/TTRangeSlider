@@ -61,8 +61,8 @@ static const CGFloat kLabelsFontSize = 12.0f;
     [self.layer addSublayer:self.rightHandle];
     
     // HACK: NEED TO FIX THE INITIALIZATION SO THAT VALUES HERE ARE SET BY THE CALLER.
-    self.barHandleDiameter = 40;
-    self.barCornerRadius = 20;
+    self.barHandleDiameter = 32;
+    self.barCornerRadius = 16;
     self.leftHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
     self.rightHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
     self.rightHandle.cornerRadius = self.barCornerRadius;
