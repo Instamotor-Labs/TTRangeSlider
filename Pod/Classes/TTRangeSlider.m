@@ -368,6 +368,9 @@ static const CGFloat kLabelsFontSize = 12.0f;
         self.rightHandleSelected = NO;
         [self animateHandle:self.rightHandle withSelection:NO];
     }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(rangeSlider:didEndTouchWithSelectedMinimumValue:andMaximumValue:)]) {
+        [self.delegate rangeSlider:self didEndTouchWithSelectedMinimumValue:self.selectedMinimum andMaximumValue:self.selectedMaximum];
+    }
 }
 
 #pragma mark - Animation

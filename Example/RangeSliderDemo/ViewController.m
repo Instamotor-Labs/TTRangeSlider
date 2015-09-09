@@ -77,4 +77,8 @@
     }
 }
 
+- (void)rangeSlider:(TTRangeSlider *)sender didEndTouchWithSelectedMinimumValue:(float)selectedMinimum andMaximumValue:(float)selectedMaximum {
+    NSLog(@"Did end touching slider Min Value: %.0f Max Value: %.0f", selectedMinimum, selectedMaximum);
+}
+
 @end
