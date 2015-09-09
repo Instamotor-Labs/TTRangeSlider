@@ -6,7 +6,7 @@
 #import "TTRangeSlider.h"
 
 const int HANDLE_TOUCH_AREA_EXPANSION = -30; //expand the touch area of the handle by this much (negative values increase size) so that you don't have to touch right on the handle to activate it.
-const float HANDLE_DIAMETER = 40;
+//const float self.barHandleDiameter = 40;
 const float TEXT_HEIGHT = 14;
 
 @interface TTRangeSlider ()
@@ -48,26 +48,25 @@ static const CGFloat kLabelsFontSize = 12.0f;
     self.sliderLine.backgroundColor = self.tintColor.CGColor;
     [self.layer addSublayer:self.sliderLine];
     
-    
-    // calculate diameter and radius
-    
-    
     //draw the minimum slider handle
     self.leftHandle = [CALayer layer];
-    self.leftHandle.cornerRadius = HANDLE_DIAMETER/2.0f;
+    
     self.leftHandle.backgroundColor = self.tintColor.CGColor;
     [self.layer addSublayer:self.leftHandle];
     
     //draw the maximum slider handle
     self.rightHandle = [CALayer layer];
-    self.rightHandle.cornerRadius = HANDLE_DIAMETER/2.0f;
+    
     self.rightHandle.backgroundColor = self.tintColor.CGColor;
     [self.layer addSublayer:self.rightHandle];
     
-    
-    
-    self.leftHandle.frame = CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
-    self.rightHandle.frame = CGRectMake(0, 0, HANDLE_DIAMETER, HANDLE_DIAMETER);
+    // HACK: NEED TO FIX THE INITIALIZATION SO THAT VALUES HERE ARE SET BY THE CALLER.
+    self.barHandleDiameter = 40;
+    self.barCornerRadius = 20;
+    self.leftHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
+    self.rightHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
+    self.rightHandle.cornerRadius = self.barCornerRadius;
+    self.leftHandle.cornerRadius = self.barCornerRadius;
     
     //draw the text labels
     self.minLabel = [[CATextLayer alloc] init];
@@ -94,6 +93,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
         self.maxLabel.foregroundColor = self.maxLabelColour.CGColor;
     }
     [self.layer addSublayer:self.maxLabel];
+    self.clipsToBounds = NO;
     
     [self refresh];
 }
@@ -103,6 +103,9 @@ static const CGFloat kLabelsFontSize = 12.0f;
     
     //positioning for the slider line
     float barSidePadding = self.barPadding;
+    
+    
+    
     CGRect currentFrame = self.frame;
     float yMiddle = currentFrame.size.height/2.0;
     CGPoint lineLeftSide = CGPointMake(barSidePadding, yMiddle);
@@ -110,6 +113,8 @@ static const CGFloat kLabelsFontSize = 12.0f;
     
     self.sliderLine.backgroundColor = self.barColor.CGColor;
     
+    self.rightHandle.cornerRadius = self.barCornerRadius;
+    self.leftHandle.cornerRadius = self.barCornerRadius;
     
     self.leftHandle.backgroundColor = self.handleColor.CGColor;
     self.rightHandle.backgroundColor = self.handleColor.CGColor;
@@ -156,7 +161,6 @@ static const CGFloat kLabelsFontSize = 12.0f;
     return CGSizeMake(UIViewNoIntrinsicMetric, 65);
 }
 
-
 - (float)getPercentageAlongLineForValue:(float) value {
     if (self.minValue == self.maxValue){
         return 0; //stops divide by zero errors where maxMinDif would be zero. If the min and max are the same the percentage has no point.
@@ -200,10 +204,10 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
 #pragma mark - Set Positions
 - (void)updateHandlePositions {
-    CGPoint leftHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMinimum]  + HANDLE_DIAMETER/2.0f), CGRectGetMidY(self.sliderLine.frame));
+    CGPoint leftHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMinimum]), CGRectGetMidY(self.sliderLine.frame));
     self.leftHandle.position = leftHandleCenter;
     
-    CGPoint rightHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMaximum] - HANDLE_DIAMETER/2.0f), CGRectGetMidY(self.sliderLine.frame));
+    CGPoint rightHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMaximum]), CGRectGetMidY(self.sliderLine.frame));
     self.rightHandle.position= rightHandleCenter;
 }
 
@@ -326,7 +330,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     CGPoint location = [touch locationInView:self];
     
     //find out the percentage along the line we are in x coordinate terms (subtracting half the frames width to account for moving the middle of the handle, not the left hand side)
-    float percentage = ((location.x-CGRectGetMinX(self.sliderLine.frame)) - HANDLE_DIAMETER/2) / (CGRectGetMaxX(self.sliderLine.frame) - CGRectGetMinX(self.sliderLine.frame));
+    float percentage = ((location.x-CGRectGetMinX(self.sliderLine.frame)) - self.barHandleDiameter/2) / (CGRectGetMaxX(self.sliderLine.frame) - CGRectGetMinX(self.sliderLine.frame));
     
     //multiply that percentage by self.maxValue to get the new selected minimum value
     float selectedValue = percentage * (self.maxValue - self.minValue) + self.minValue;
@@ -369,28 +373,30 @@ static const CGFloat kLabelsFontSize = 12.0f;
 #pragma mark - Animation
 - (void)animateHandle:(CALayer*)handle withSelection:(BOOL)selected {
     if (selected){
-                [CATransaction begin];
-                [CATransaction setAnimationDuration:0.3];
-                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-                handle.transform = CATransform3DMakeScale(1.7, 1.7, 1);
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.3];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+        handle.transform = CATransform3DMakeScale(self.animateScale, self.animateScale, 1);
+        handle.cornerRadius = handle.cornerRadius - handle.cornerRadius*self.animateScale;
         
         //the label above the handle will need to move too if the handle changes size
         [self updateLabelPositions];
         
-                [CATransaction setCompletionBlock:^{
-                }];
-                [CATransaction commit];
+        [CATransaction setCompletionBlock:^{
+        }];
+        [CATransaction commit];
         
     } else {
-                [CATransaction begin];
-                [CATransaction setAnimationDuration:0.3];
-                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-                handle.transform = CATransform3DIdentity;
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.3];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+        handle.transform = CATransform3DIdentity;
+        //handle.cornerRadius = handle.cornerRadius*(1 + self.animateScale);
         
         //the label above the handle will need to move too if the handle changes size
         [self updateLabelPositions];
         
-                [CATransaction commit];
+        [CATransaction commit];
     }
 }
 

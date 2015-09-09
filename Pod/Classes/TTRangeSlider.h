@@ -69,7 +69,7 @@ IB_DESIGNABLE
 
 
 /**
- * If set, this will adjust the corner radius of the bar
+ * If set, this will adjust the diameter of the handle
  */
 @property (nonatomic, assign) IBInspectable float barHandleDiameter;
 
@@ -89,6 +89,11 @@ IB_DESIGNABLE
  * If set, this will adjust the corner radius of the bar
  */
 @property (nonatomic, assign) IBInspectable float barCornerRadius;
+
+/**
+ * If set, this will adjust the scale of the slider as it animates
+ */
+@property (nonatomic, assign) IBInspectable float animateScale;
 
 /**
  * The color of the maximum value text label. If not set, the default is the tintColor.
