@@ -104,8 +104,6 @@ static const CGFloat kLabelsFontSize = 12.0f;
     //positioning for the slider line
     float barSidePadding = self.barPadding;
     
-    
-    
     CGRect currentFrame = self.frame;
     float yMiddle = currentFrame.size.height/2.0;
     CGPoint lineLeftSide = CGPointMake(barSidePadding, yMiddle);
@@ -113,6 +111,8 @@ static const CGFloat kLabelsFontSize = 12.0f;
     
     self.sliderLine.backgroundColor = self.barColor.CGColor;
     
+    self.leftHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
+    self.rightHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
     self.rightHandle.cornerRadius = self.barCornerRadius;
     self.leftHandle.cornerRadius = self.barCornerRadius;
     
@@ -375,32 +375,31 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
 #pragma mark - Animation
 - (void)animateHandle:(CALayer*)handle withSelection:(BOOL)selected {
-    if (selected){
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:0.3];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-        handle.transform = CATransform3DMakeScale(self.animateScale, self.animateScale, 1);
-        handle.cornerRadius = handle.cornerRadius - handle.cornerRadius*self.animateScale;
-        
-        //the label above the handle will need to move too if the handle changes size
-        [self updateLabelPositions];
-        
-        [CATransaction setCompletionBlock:^{
-        }];
-        [CATransaction commit];
-        
-    } else {
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:0.3];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-        handle.transform = CATransform3DIdentity;
-        //handle.cornerRadius = handle.cornerRadius*(1 + self.animateScale);
-        
-        //the label above the handle will need to move too if the handle changes size
-        [self updateLabelPositions];
-        
-        [CATransaction commit];
-    }
+    //    if (selected){
+    //        [CATransaction begin];
+    //        [CATransaction setAnimationDuration:0.3];
+    //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+    //        handle.transform = CATransform3DMakeScale(self.animateScale, self.animateScale, 1);
+    //
+    //        //the label above the handle will need to move too if the handle changes size
+    //        [self updateLabelPositions];
+    //
+    //        [CATransaction setCompletionBlock:^{
+    //        }];
+    //        [CATransaction commit];
+    //
+    //    } else {
+    //        [CATransaction begin];
+    //        [CATransaction setAnimationDuration:0.3];
+    //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+    //        handle.transform = CATransform3DIdentity;
+    //        //handle.cornerRadius = handle.cornerRadius*(1 + self.animateScale);
+    //
+    //        //the label above the handle will need to move too if the handle changes size
+    //        [self updateLabelPositions];
+    //
+    //        [CATransaction commit];
+    //    }
 }
 
 #pragma mark - Calculating nearest handle to point
