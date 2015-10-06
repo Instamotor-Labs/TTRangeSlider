@@ -111,10 +111,10 @@ static const CGFloat kLabelsFontSize = 12.0f;
     
     self.sliderLine.backgroundColor = self.barColor.CGColor;
     
-    self.leftHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
-    self.rightHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
-    self.rightHandle.cornerRadius = self.barCornerRadius;
-    self.leftHandle.cornerRadius = self.barCornerRadius;
+    //    self.leftHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
+    //    self.rightHandle.frame = CGRectMake(0, 0, self.barHandleDiameter, self.barHandleDiameter);
+    //    self.rightHandle.cornerRadius = self.barCornerRadius;
+    //    self.leftHandle.cornerRadius = self.barCornerRadius;
     
     self.leftHandle.backgroundColor = self.handleColor.CGColor;
     self.rightHandle.backgroundColor = self.handleColor.CGColor;
@@ -205,46 +205,53 @@ static const CGFloat kLabelsFontSize = 12.0f;
 #pragma mark - Set Positions
 - (void)updateHandlePositions {
     CGPoint leftHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMinimum]), CGRectGetMidY(self.sliderLine.frame));
-    self.leftHandle.position = leftHandleCenter;
+    if (self.leftHandle.position.x != leftHandleCenter.x) {
+        self.leftHandle.position = leftHandleCenter;
+        NSLog(@"handle left: %f", leftHandleCenter.x);
+    }
     
     CGPoint rightHandleCenter = CGPointMake(([self getXPositionAlongLineForValue:self.selectedMaximum]), CGRectGetMidY(self.sliderLine.frame));
-    self.rightHandle.position= rightHandleCenter;
+    
+    if (self.rightHandle.position.x != rightHandleCenter.x){
+        self.rightHandle.position= rightHandleCenter;
+        NSLog(@"handle right: %f", rightHandleCenter.x);
+    }
 }
 
 - (void)updateLabelPositions {
     //the centre points for the labels are X = the same x position as the relevant handle. Y = the y position of the handle minus half the height of the text label, minus some padding.
-    int padding = 8;
-    float minSpacingBetweenLabels = 8.0f;
-    
-    CGPoint leftHandleCentre = [self getCentreOfRect:self.leftHandle.frame];
-    CGPoint newMinLabelCenter = CGPointMake(leftHandleCentre.x, self.leftHandle.frame.origin.y - (self.minLabel.frame.size.height/2) - padding);
-    
-    CGPoint rightHandleCentre = [self getCentreOfRect:self.rightHandle.frame];
-    CGPoint newMaxLabelCenter = CGPointMake(rightHandleCentre.x, self.rightHandle.frame.origin.y - (self.maxLabel.frame.size.height/2) - padding);
-    
-    CGSize minLabelTextSize = [self.minLabel.string sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kLabelsFontSize]}];
-    CGSize maxLabelTextSize = [self.maxLabel.string sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kLabelsFontSize]}];
-    
-    float newLeftMostXInMaxLabel = newMaxLabelCenter.x - maxLabelTextSize.width/2;
-    float newRightMostXInMinLabel = newMinLabelCenter.x + minLabelTextSize.width/2;
-    float newSpacingBetweenTextLabels = newLeftMostXInMaxLabel - newRightMostXInMinLabel;
-    
-    if (newSpacingBetweenTextLabels > minSpacingBetweenLabels) {
-        self.minLabel.position = newMinLabelCenter;
-        self.maxLabel.position = newMaxLabelCenter;
-    }
-    else {
-        newMinLabelCenter = CGPointMake(self.minLabel.position.x, self.leftHandle.frame.origin.y - (self.minLabel.frame.size.height/2) - padding);
-        newMaxLabelCenter = CGPointMake(self.maxLabel.position.x, self.rightHandle.frame.origin.y - (self.maxLabel.frame.size.height/2) - padding);
-        self.minLabel.position = newMinLabelCenter;
-        self.maxLabel.position = newMaxLabelCenter;
-        
-        //Update x if they are still in the original position
-        if (self.minLabel.position.x == self.maxLabel.position.x && self.leftHandle != nil) {
-            self.minLabel.position = CGPointMake(leftHandleCentre.x, self.minLabel.position.y);
-            self.maxLabel.position = CGPointMake(leftHandleCentre.x + self.minLabel.frame.size.width/2 + minSpacingBetweenLabels + self.maxLabel.frame.size.width/2, self.maxLabel.position.y);
-        }
-    }
+    //    int padding = 8;
+    //    float minSpacingBetweenLabels = 8.0f;
+    //
+    //    CGPoint leftHandleCentre = [self getCentreOfRect:self.leftHandle.frame];
+    //    CGPoint newMinLabelCenter = CGPointMake(leftHandleCentre.x, self.leftHandle.frame.origin.y - (self.minLabel.frame.size.height/2) - padding);
+    //
+    //    CGPoint rightHandleCentre = [self getCentreOfRect:self.rightHandle.frame];
+    //    CGPoint newMaxLabelCenter = CGPointMake(rightHandleCentre.x, self.rightHandle.frame.origin.y - (self.maxLabel.frame.size.height/2) - padding);
+    //
+    //    CGSize minLabelTextSize = [self.minLabel.string sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kLabelsFontSize]}];
+    //    CGSize maxLabelTextSize = [self.maxLabel.string sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kLabelsFontSize]}];
+    //
+    //    float newLeftMostXInMaxLabel = newMaxLabelCenter.x - maxLabelTextSize.width/2;
+    //    float newRightMostXInMinLabel = newMinLabelCenter.x + minLabelTextSize.width/2;
+    //    float newSpacingBetweenTextLabels = newLeftMostXInMaxLabel - newRightMostXInMinLabel;
+    //
+    //    if (newSpacingBetweenTextLabels > minSpacingBetweenLabels) {
+    //        self.minLabel.position = newMinLabelCenter;
+    //        self.maxLabel.position = newMaxLabelCenter;
+    //    }
+    //    else {
+    //        newMinLabelCenter = CGPointMake(self.minLabel.position.x, self.leftHandle.frame.origin.y - (self.minLabel.frame.size.height/2) - padding);
+    //        newMaxLabelCenter = CGPointMake(self.maxLabel.position.x, self.rightHandle.frame.origin.y - (self.maxLabel.frame.size.height/2) - padding);
+    //        self.minLabel.position = newMinLabelCenter;
+    //        self.maxLabel.position = newMaxLabelCenter;
+    //
+    //        //Update x if they are still in the original position
+    //        if (self.minLabel.position.x == self.maxLabel.position.x && self.leftHandle != nil) {
+    //            self.minLabel.position = CGPointMake(leftHandleCentre.x, self.minLabel.position.y);
+    //            self.maxLabel.position = CGPointMake(leftHandleCentre.x + self.minLabel.frame.size.width/2 + minSpacingBetweenLabels + self.maxLabel.frame.size.width/2, self.maxLabel.position.y);
+    //        }
+    //    }
 }
 
 #pragma mark - Touch Tracking
@@ -337,7 +344,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     
     if (self.leftHandleSelected)
     {
-        if (selectedValue < self.selectedMaximum){
+        if (selectedValue < self.selectedMaximum && selectedValue != self.selectedMinimum){
             self.selectedMinimum = selectedValue;
         }
         else {
@@ -347,7 +354,7 @@ static const CGFloat kLabelsFontSize = 12.0f;
     }
     else if (self.rightHandleSelected)
     {
-        if (selectedValue > self.selectedMinimum || (self.disableRange && selectedValue >= self.minValue)){ //don't let the dots cross over, (unless range is disabled, in which case just dont let the dot fall off the end of the screen)
+        if ((selectedValue > self.selectedMinimum && selectedValue != self.selectedMaximum) || (self.disableRange && selectedValue >= self.minValue)){ //don't let the dots cross over, (unless range is disabled, in which case just dont let the dot fall off the end of the screen)
             self.selectedMaximum = selectedValue;
         }
         else {
@@ -375,31 +382,31 @@ static const CGFloat kLabelsFontSize = 12.0f;
 
 #pragma mark - Animation
 - (void)animateHandle:(CALayer*)handle withSelection:(BOOL)selected {
-    //    if (selected){
-    //        [CATransaction begin];
-    //        [CATransaction setAnimationDuration:0.3];
-    //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-    //        handle.transform = CATransform3DMakeScale(self.animateScale, self.animateScale, 1);
+    //        if (selected){
+    //            [CATransaction begin];
+    //            [CATransaction setAnimationDuration:0.3];
+    //            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+    //            handle.transform = CATransform3DMakeScale(self.animateScale, self.animateScale, 1);
     //
-    //        //the label above the handle will need to move too if the handle changes size
-    //        [self updateLabelPositions];
+    //            //the label above the handle will need to move too if the handle changes size
+    //            [self updateLabelPositions];
     //
-    //        [CATransaction setCompletionBlock:^{
-    //        }];
-    //        [CATransaction commit];
+    //            [CATransaction setCompletionBlock:^{
+    //            }];
+    //            [CATransaction commit];
     //
-    //    } else {
-    //        [CATransaction begin];
-    //        [CATransaction setAnimationDuration:0.3];
-    //        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
-    //        handle.transform = CATransform3DIdentity;
-    //        //handle.cornerRadius = handle.cornerRadius*(1 + self.animateScale);
+    //        } else {
+    //            [CATransaction begin];
+    //            [CATransaction setAnimationDuration:0.3];
+    //            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut] ];
+    //            handle.transform = CATransform3DIdentity;
+    //            handle.cornerRadius = handle.cornerRadius*(1 + self.animateScale);
     //
-    //        //the label above the handle will need to move too if the handle changes size
-    //        [self updateLabelPositions];
+    //            //the label above the handle will need to move too if the handle changes size
+    //            [self updateLabelPositions];
     //
-    //        [CATransaction commit];
-    //    }
+    //            [CATransaction commit];
+    //        }
 }
 
 #pragma mark - Calculating nearest handle to point
