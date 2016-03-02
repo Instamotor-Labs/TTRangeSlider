@@ -52,12 +52,19 @@ static const CGFloat kLabelsFontSize = 12.0f;
     self.leftHandle = [CALayer layer];
     
     self.leftHandle.backgroundColor = self.tintColor.CGColor;
+    self.leftHandle.shadowOffset = CGSizeMake(0, 2);
+    self.leftHandle.shadowRadius = 1.3;
+    self.leftHandle.shadowOpacity = 0.6;
     [self.layer addSublayer:self.leftHandle];
     
     //draw the maximum slider handle
     self.rightHandle = [CALayer layer];
     
     self.rightHandle.backgroundColor = self.tintColor.CGColor;
+    self.rightHandle.shadowOffset = CGSizeMake(0, 2);
+    self.rightHandle.shadowRadius = 1.3;
+    self.rightHandle.shadowOpacity = 0.6;
+    
     [self.layer addSublayer:self.rightHandle];
     
     // HACK: NEED TO FIX THE INITIALIZATION SO THAT VALUES HERE ARE SET BY THE CALLER.
